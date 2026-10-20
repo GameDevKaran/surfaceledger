@@ -1,10 +1,12 @@
 # SurfaceLedger: architecture
 
-Proposed design; no components have been implemented.
+Local worker implemented; cloud and web components remain planned.
 
-Upload overlapping photographs of one owned planar artwork with four corner markers → OpenCV 5 detects correspondences, rejects outliers and estimates homographies → calculate coverage plus focus/glare masks → select the largest deficient region → capture another photograph → update the map and export a report linking regions to source files. Invalid geometry returns “unable to register,” never green coverage.
+The input manifest identifies a rectified reference, physical board dimensions and original captures. ORB descriptors and ratio-tested, unique matches feed RANSAC homography estimation. Consensus, reprojection error, spatial spread and projected-boundary checks reject weak geometry. The first milestone requires an already rectified reference; automatic corner-marker detection is deferred.
 
-Python/OpenCV worker on AWS processes signed uploads from a TypeScript web UI; S3 stores originals and reports with short-lived access. The AWS job is the real computation, not a decorative bucket. Calibration and minimum overlap remain explicit. No curved objects, photogrammetric 3D, OCR, generative filling or archival certification. Input is owned artwork/printed patterns; avoid uploading third-party collections without permission.
+Each registered capture contributes a projected validity mask and a separate focus/glare qualification mask. Coverage is the union of actual source samples. Reports retain per-cell source contributions and input hashes. Nearest-neighbor previews never fill gaps; a source-index raster identifies the input behind every supported preview pixel. Four-connected deficient cells define the largest physical region needing recapture.
+
+The planned Python/OpenCV worker on AWS will process signed uploads from a web UI; S3 will store originals and reports with short-lived access. The substantive AWS computation has not run. Calibration and overlap remain explicit. No curved objects, photogrammetric 3D, OCR, generative filling or archival certification. Input is owned artwork/printed patterns.
 
 ## Failure handling and data boundaries
 
@@ -12,4 +14,4 @@ Preserve original inputs and make unavailable evidence explicit. Provider failur
 
 ## Implementation record
 
-Add pinned dependencies, actual component boundaries and operational instructions when the first working slice exists. Document departures from this design with their reason; do not describe planned integrations as verified.
+`surfaceledger/pipeline.py` owns registration, coverage and exports; `fixtures.py` creates owned synthetic development targets with authored truth; `__main__.py` exposes `version`, `fixtures` and `analyze`. Requirements pin OpenCV 5 and NumPy. The CLI refuses OpenCV 4. No provider SDK or credentials are needed for local development. See `LOCAL_MILESTONE.md` for verification and remaining gates.

@@ -1,6 +1,6 @@
 # SurfaceLedger: verification plan
 
-No tests or evaluations have run. The following are prospective acceptance targets, not results.
+The local synthetic pipeline tests have run; see [the local milestone](LOCAL_MILESTONE.md). The following real camera evaluation targets remain prospective, not measured results.
 
 ## Fixtures and acceptance
 
