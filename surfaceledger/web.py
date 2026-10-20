@@ -47,7 +47,12 @@ def json_bytes(value: object) -> bytes:
 
 
 def execution_context(lambda_request_id: str | None = None) -> dict:
-    actual_lambda = bool(os.environ.get("AWS_LAMBDA_FUNCTION_NAME") and lambda_request_id)
+    # The local AWS emulator also supplies function/request identifiers. Only
+    # the deployment template opts into the cloud label; local runs default off.
+    actual_lambda = bool(
+        os.environ.get("SURFACELEDGER_RUNTIME_MODE") == "aws-lambda"
+        and os.environ.get("AWS_LAMBDA_FUNCTION_NAME") and lambda_request_id
+    )
     return {
         "location": "aws-lambda" if actual_lambda else "local",
         "aws_verified": actual_lambda,

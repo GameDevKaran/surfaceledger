@@ -83,6 +83,15 @@ def test_lambda_adapter_is_only_local_contract_evidence(monkeypatch):
     assert handler(event, SimpleNamespace())[ "statusCode"] == 503
 
 
+def test_emulator_identifiers_do_not_prove_cloud_execution(monkeypatch):
+    monkeypatch.setenv("AWS_LAMBDA_FUNCTION_NAME", "explicit-local-emulator")
+    monkeypatch.delenv("SURFACELEDGER_RUNTIME_MODE", raising=False)
+    evidence = execution_context("explicit-test-request")
+    assert evidence["location"] == "local"
+    assert evidence["aws_verified"] is False
+    assert evidence["request_id"] is None
+
+
 def test_real_http_compute_and_source_only_response(gap):
     server = LocalServer(("127.0.0.1", 0))
     thread = threading.Thread(target=server.serve_forever, daemon=True)

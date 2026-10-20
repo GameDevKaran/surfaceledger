@@ -27,7 +27,7 @@
         "Architectures":["x86_64"],"MemorySize":1024,"Timeout":40,"EphemeralStorage":{"Size":512},
         "Role":{"Fn::GetAtt":["RuntimeRole","Arn"]},
         "Code":{"ImageUri":{"Ref":"ImageUri"}},
-        "Environment":{"Variables":{"SURFACELEDGER_PUBLIC_ORIGIN":{"Ref":"PublicOrigin"},"SURFACELEDGER_SOURCE_COMMIT":{"Ref":"SourceCommit"},"OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1"}},
+        "Environment":{"Variables":{"SURFACELEDGER_PUBLIC_ORIGIN":{"Ref":"PublicOrigin"},"SURFACELEDGER_SOURCE_COMMIT":{"Ref":"SourceCommit"},"SURFACELEDGER_RUNTIME_MODE":"aws-lambda","OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1"}},
         "Tags":[{"Key":"Application","Value":"SurfaceLedger"},{"Key":"ManagedBy","Value":"surfaceledger-release"},{"Key":"ApprovalReference","Value":{"Ref":"ApprovalReference"}}]
       }
     },
