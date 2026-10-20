@@ -30,6 +30,8 @@ Use only the owner's authorized AWS profile `clauserunner-dev`, region `us-east-
 
 The deployment templates were parsed locally, and the AWS CloudFormation application-template validation API accepted the template on 21 October IST. This is syntax validation, not deployed compatibility or permission proof.
 
+Local Linux image verification subsequently passed for source `8161eae7b8de9cb54c33e285329ebe5cca272602`; digest `sha256:2ace0b2465ae4bf8023cc93de4771de439f4cddb4907b474ebfb93589478d498`. The actual handler, static UI, OpenCV subprocess, origin guard and temporary cleanup worked under 1 GB/0.6 CPU/read-only root. The emulator label is explicitly local, including when the emulator supplies AWS-shaped request IDs. No live AWS processing is inferred.
+
 ## Quota and cost boundary
 
 The authorized account's read-only Lambda settings returned total concurrency **10**, all unreserved. AWS documents that reservations must leave 100 unreserved, so this plan does **not** claim a one-instance reserved limit. No quota increase or shared-account change is requested. Invocations share the existing account quota; the application has one analysis subprocess per execution environment. Origin checks protect browser requests but do not prevent deliberate public API usage. [Reserved concurrency](https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html).
