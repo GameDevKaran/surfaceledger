@@ -4,7 +4,7 @@ Find gaps and weak detail in tiled artwork captures.
 
 ## Status
 
-The local OpenCV 5 worker is implemented and tested on owned synthetic fixtures. It exports a coverage report, recapture region and source-backed image evidence. AWS execution, a public application and real camera validation remain pending. Source stays private until the owner explicitly authorizes publication of this project.
+The local OpenCV 5 application and browser interface are implemented and tested on owned synthetic fixtures. Upload photographs, inspect measured coverage, add a recapture, save locally and export source-backed evidence. AWS execution, a public deployment and real camera validation remain pending. Source stays private until the owner explicitly authorizes publication of this project.
 
 ## Intended use
 
@@ -15,6 +15,18 @@ A small archive photographing a large flat poster needs to know whether it captu
 Supply a rectified overview and overlapping detail photographs → OpenCV 5 detects correspondences, rejects outliers and estimates homographies → calculate source coverage and conservative focus/glare masks → select the largest deficient region → add a photograph and rerun → export a report linking regions to original files. Invalid geometry returns “unable to register” and contributes zero coverage.
 
 ## Development
+
+Start the browser application after installing the Python requirements:
+
+```powershell
+./.venv/Scripts/python.exe -m surfaceledger.web
+```
+
+Open `http://127.0.0.1:8784`. “Load sample gap” loads explicitly synthetic inputs; “Inspect coverage” runs actual OpenCV. Add the sample recapture and inspect again. For your own inputs, provide an already rectified overview, overlapping PNG/JPEG details, physical dimensions and planarity confirmation. Limits are shown in the interface. Nothing is retained on the server; optional local saving uses IndexedDB.
+
+Browser checks: `npm ci`, `npx playwright install chromium`, then `npm run test:browser`. Python tests: `python -m pytest -q`. For a deployed release, set `SURFACELEDGER_VERIFY_URL` to its exact authorized Lambda URL before running the browser verifier. This invokes real computation and needs the approved release allowance.
+
+See [browser milestone](docs/WEB_MILESTONE.md) and [AWS release procedure](docs/AWS_RELEASE.md).
 
 Use Python 3.14 and an isolated environment. On Windows:
 

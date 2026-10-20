@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SurfaceLedger — every region accounted for</title><link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script></head>
+<body>
+<header><a class="wordmark" href="/">▧ SurfaceLedger</a><span class="edition">CAPTURE INSPECTION / 01</span><span id="runtime" class="pill">Checking vision worker…</span></header>
+<main>
+<section class="intro"><p class="eyebrow">BEFORE YOU PACK AWAY THE CAMERA</p><h1>A complete picture.<br><em>With the evidence to match.</em></h1><p>Inspect overlapping photographs of a flat artwork. Find missing or weak detail, then see exactly where to recapture. No restored or invented pixels.</p></section>
+<div class="workspace">
+<aside class="panel inputs"><div class="section-title"><span class="step">01</span><h2>Your capture set</h2></div>
+<p class="muted">Start with an owned synthetic board, or use your own photographs.</p>
+<div class="sample-row"><button id="sample">Load sample gap</button><button id="invalid" class="quiet">Try rejected capture</button></div>
+<p id="kind" class="notice">No capture set loaded.</p>
+<label class="upload">Rectified overview<input id="reference" type="file" accept="image/png,image/jpeg"><small>Already straightened and cropped to the artwork. Geometry only; never counted as captured detail.</small></label>
+<label class="upload">Detail photographs<input id="captures" type="file" accept="image/png,image/jpeg" multiple><small>Add overlapping details, including a recapture. Maximum six.</small></label>
+<ul id="files" class="files"></ul>
+<div class="dimensions"><label>Width · mm<input id="width" type="number" min="1" max="100000" value="768"></label><label>Height · mm<input id="height" type="number" min="1" max="100000" value="512"></label></div>
+<label class="check"><input id="planar" type="checkbox">I confirm this is a flat surface and the overview is rectified.</label>
+<button id="analyze" class="primary" disabled>Inspect coverage <span>↗</span></button>
+<button id="recapture" disabled>Add sample recapture</button>
+<p class="fine">PNG/JPEG · 1.5 MB each · 2.8 MB combined. Overview ≤ 1 megapixel; each detail ≤ 2 megapixels. Original uploads are not resized silently.</p>
+<div class="local-controls"><button id="save" class="quiet" disabled>Save on this device</button><button id="clear" class="quiet">Clear this device</button></div>
+<p id="saved" class="fine">Nothing saved. Saving is optional and stays in this browser.</p>
+</aside>
+<section class="review" aria-label="Capture review">
+<div id="status" role="status" aria-live="polite">Ready for your first inspection.</div>
+<div id="error" role="alert" hidden></div>
+<div class="metrics"><div><span>Source coverage</span><strong id="coverage">—</strong></div><div><span>Detail meeting thresholds</span><strong id="quality">—</strong></div><div><span>Supported cells</span><strong id="cells">—</strong></div></div>
+<div class="panel viewport">
+<div class="view-head"><h2>Capture evidence</h2><div class="tabs" aria-label="Evidence view"><button data-view="preview" aria-pressed="true">Source pixels</button><button data-view="quality" aria-pressed="false">Quality mask</button><button data-view="coverage" aria-pressed="false">Coverage mask</button></div></div>
+<div class="canvas-wrap"><canvas id="map" width="768" height="512" aria-label="Capture coverage map"></canvas><p id="empty">Your evidence map appears here.<br>Uncaptured detail stays empty.</p></div>
+<div class="legend"><span>□ Unsupported pixels remain empty</span><span class="orange">▧ Orange cells need recapture</span></div>
+</div>
+<div class="panel next"><div><p class="eyebrow">NEXT USEFUL CAPTURE</p><h2 id="decision">Inspect a set to find the gap.</h2><p id="target">The overview aligns your photographs; it cannot fill a missing region.</p></div><span class="target-icon" aria-hidden="true">⌖</span></div>
+<div class="panel provenance"><div class="section-title"><span class="step">02</span><h2>Trace every result</h2></div><p id="execution" class="muted">Runtime evidence is recorded after analysis.</p><ul id="sources"></ul><div class="exports"><button id="report" disabled>Download report</button><button id="preview" disabled>Download source preview</button><button id="bundle" disabled>Export capture set</button></div></div>
+</section></div>
+<footer><strong>Evidence, not certification.</strong> Focus and glare checks use fixed, controlled-scene thresholds. Smooth or reflective artwork can be flagged; repeated texture can defeat registration. Real camera accuracy and archival fitness are not established by the synthetic demo. Images are processed temporarily and deleted from the server before the response. Download the originals/report or explicitly save locally to retain your work.</footer>
+</main></body></html>

@@ -1,0 +1,10 @@
+**
+!requirements.txt
+!surfaceledger/
+!surfaceledger/*.py
+!lambda_handler.py
+!web/
+!web/*.html
+!web/*.css
+!web/*.js
+!Dockerfile

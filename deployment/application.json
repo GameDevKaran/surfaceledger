@@ -1,0 +1,39 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Isolated stateless SurfaceLedger OpenCV5 computation and HTTPS interface.",
+  "Parameters": {
+    "ImageUri":{"Type":"String","AllowedPattern":".+\\.dkr\\.ecr\\.us-east-1\\.amazonaws\\.com/surfaceledger@sha256:[0-9a-f]{64}"},
+    "SourceCommit":{"Type":"String","AllowedPattern":"[0-9a-f]{40}"},
+    "PublicOrigin":{"Type":"String","Default":"","AllowedPattern":"(^$)|(^https://[a-z0-9]+\\.lambda-url\\.us-east-1\\.on\\.aws$)"},
+    "Publish":{"Type":"String","Default":"false","AllowedValues":["true","false"]},
+    "ApprovalReference":{"Type":"String","MinLength":8}
+  },
+  "Conditions":{"PublicEnabled":{"Fn::Equals":[{"Ref":"Publish"},"true"]}},
+  "Resources":{
+    "Logs":{"Type":"AWS::Logs::LogGroup","Properties":{"LogGroupName":"/aws/lambda/surfaceledger","RetentionInDays":7}},
+    "RuntimeRole":{
+      "Type":"AWS::IAM::Role",
+      "Properties":{
+        "AssumeRolePolicyDocument":{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"lambda.amazonaws.com"},"Action":"sts:AssumeRole"}]},
+        "Policies":[{"PolicyName":"OwnExecutionLogs","PolicyDocument":{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["logs:CreateLogStream","logs:PutLogEvents"],"Resource":{"Fn::GetAtt":["Logs","Arn"]}}]}}],
+        "Tags":[{"Key":"Application","Value":"SurfaceLedger"}]
+      }
+    },
+    "Worker":{
+      "Type":"AWS::Lambda::Function",
+      "DependsOn":"Logs",
+      "Properties":{
+        "FunctionName":"surfaceledger","PackageType":"Image",
+        "Architectures":["x86_64"],"MemorySize":1024,"Timeout":40,"EphemeralStorage":{"Size":512},
+        "Role":{"Fn::GetAtt":["RuntimeRole","Arn"]},
+        "Code":{"ImageUri":{"Ref":"ImageUri"}},
+        "Environment":{"Variables":{"SURFACELEDGER_PUBLIC_ORIGIN":{"Ref":"PublicOrigin"},"SURFACELEDGER_SOURCE_COMMIT":{"Ref":"SourceCommit"},"OPENBLAS_NUM_THREADS":"1","OMP_NUM_THREADS":"1"}},
+        "Tags":[{"Key":"Application","Value":"SurfaceLedger"},{"Key":"ManagedBy","Value":"surfaceledger-release"},{"Key":"ApprovalReference","Value":{"Ref":"ApprovalReference"}}]
+      }
+    },
+    "PublicUrl":{"Type":"AWS::Lambda::Url","Properties":{"TargetFunctionArn":{"Ref":"Worker"},"AuthType":"NONE","InvokeMode":"BUFFERED"}},
+    "UrlPermission":{"Type":"AWS::Lambda::Permission","Condition":"PublicEnabled","Properties":{"FunctionName":{"Ref":"Worker"},"Action":"lambda:InvokeFunctionUrl","Principal":"*","FunctionUrlAuthType":"NONE"}},
+    "InvokePermission":{"Type":"AWS::Lambda::Permission","Condition":"PublicEnabled","Properties":{"FunctionName":{"Ref":"Worker"},"Action":"lambda:InvokeFunction","Principal":"*","InvokedViaFunctionUrl":true}}
+  },
+  "Outputs":{"Url":{"Value":{"Fn::GetAtt":["PublicUrl","FunctionUrl"]}},"FunctionArn":{"Value":{"Fn::GetAtt":["Worker","Arn"]}}}
+}

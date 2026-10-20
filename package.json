@@ -1,0 +1,10 @@
+{
+  "name": "surfaceledger-browser-checks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Release checks only; the application uses Python and static browser assets.",
+  "scripts": {"test:browser": "node scripts/verify-browser.mjs"},
+  "devDependencies": {"@playwright/test": "1.64.1"}
+}

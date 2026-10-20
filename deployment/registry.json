@@ -1,0 +1,18 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "SurfaceLedger private image registry only. Requires separate owner spending authorization.",
+  "Resources": {
+    "Images": {
+      "Type": "AWS::ECR::Repository",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "RepositoryName": "surfaceledger",
+        "ImageTagMutability": "IMMUTABLE",
+        "EncryptionConfiguration": {"EncryptionType": "AES256"},
+        "Tags": [{"Key":"Application","Value":"SurfaceLedger"},{"Key":"ManagedBy","Value":"surfaceledger-release"}]
+      }
+    }
+  },
+  "Outputs": {"RepositoryUri":{"Value":{"Fn::GetAtt":["Images","RepositoryUri"]}}}
+}
