@@ -48,6 +48,10 @@ The overview calibrates geometry only and never supplies coverage. Automatic cor
 
 Keep credentials in local ignored files or the deployment secret store. Do not commit user data, provider tokens or private evaluation records.
 
+## Development approach
+
+Developed through AI-assisted coding and ChatGPT-assisted research. Verification results and their limits are documented in this repository.
+
 ## License
 
 Original application code, documentation and generated fixture patterns use the [MIT license](LICENSE). [Dependency notices](THIRD_PARTY_NOTICES.md) preserve their separate licensing.
