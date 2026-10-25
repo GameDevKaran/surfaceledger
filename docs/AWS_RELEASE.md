@@ -1,6 +1,6 @@
 # SurfaceLedger AWS release
 
-**AWS allowance approved; application deployment is blocked by IAM.** The owner approved up to USD10 for SurfaceLedger through 16 December 2026, reference `user-20261021-surfaceledger-aws-usd10`. The private ECR repository and tested image have been uploaded. The application stack rolled back when the deployment user was denied `iam:CreateRole`; no application Lambda or public URL is live. The separate USD25 Amazon GCP allowance remains unchanged.
+**Public AWS deployment verified on 25 October 2026:** https://2gflnfptor3334dyrlb6fy4jxy0jdiny.lambda-url.us-east-1.on.aws . Nine public browser workflow checks and seven API/security/artifact checks passed. Four actual OpenCV analysis request IDs matched CloudWatch execution reports. The existing tested ECR image was reused unchanged; see [release evidence](LIVE_RELEASE.md). The approved app-specific spending scope is preserved in the private release journal.
 
 The smallest complete release is one AWS Lambda container serving the static interface and executing real OpenCV 5, a private ECR repository and seven-day CloudWatch logs. Its isolated runtime role can write only its own logs. No S3, database, model, domain, provisioned capacity or GCP resources are required. Browser persistence and downloaded originals/reports replace the original planned S3 store.
 
@@ -28,11 +28,11 @@ Use only the owner's authorized AWS profile `clauserunner-dev`, region `us-east-
 6. Wait for a completed stack/function update. Record stack IDs, image digest, source commit, function ARN, URL, configuration and actual timestamps in `.local/aws-release.json`. Preserve completed steps on interruption; read actual state before retrying. For later updates, reuse the established URL and publication settings.
 7. Run the browser verifier with the exact URL and no AWS browser authentication. Retain real request IDs/build hashes/commit evidence in analysis responses, screenshots and reports. Verify origin rejection and timeout/invalid-image behavior. Mark live only after successful public checks; never infer it from stack success.
 
-The original application template was accepted by the read-only CloudFormation validation API on 21 October IST. The revised existing-role template is validated locally only; prior template acceptance does not establish IAM access or successful deployment.
+The original application template was accepted by the read-only CloudFormation validation API on 21 October IST. The revised existing-role template was actually deployed on 25 October after the narrow role handoff. The stack reached UPDATE_COMPLETE and Lambda configuration was read back Active/Successful with the expected source and immutable image.
 
 Local Linux image verification subsequently passed for source `8161eae7b8de9cb54c33e285329ebe5cca272602`; digest `sha256:2ace0b2465ae4bf8023cc93de4771de439f4cddb4907b474ebfb93589478d498`. The actual handler, static UI, OpenCV subprocess, origin guard and temporary cleanup worked under 1 GB/0.6 CPU/read-only root. The emulator label is explicitly local, including when the emulator supplies AWS-shaped request IDs. No live AWS processing is inferred.
 
-The same digest is now stored in the private `surfaceledger` ECR repository. Saved `.local/aws-initial-stack-events.json` records the application rollback and `DELETE_COMPLETE` for its attempted role and log group. This preserves the successful image milestone while making the owner/admin role setup the next external dependency.
+The same digest is deployed from the private `surfaceledger` ECR repository. Saved `.local/aws-initial-stack-events.json` preserves the earlier rollback and deleted attempted resources; only that empty owned failed-stack record was recovered. The dedicated role trusts Lambda and writes only its own log streams; the deployment user received only exact-role GetRole and Lambda-conditioned PassRole. Account-wide administration was not granted.
 
 ## Quota and cost boundary
 
@@ -46,4 +46,4 @@ Keep a private usage record during release checks and inspect this application's
 
 ## Remaining evidence
 
-Public AWS execution and deployment, real owned camera validation, judging access and owner media remain open. Keep the repository private until explicit per-project publication authorization; OpenCV allows a private-access route, so arrange reviewer access rather than assuming public source is mandatory. Do not access or submit through Devpost.
+Public AWS execution, deployment and browser verification are complete. Real owned-camera validation, judging access and owner media remain open. Keep the repository private until explicit per-project publication authorization; judge access is managed by the owner.

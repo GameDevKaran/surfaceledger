@@ -1,12 +1,12 @@
 # SurfaceLedger: architecture
 
-Local worker implemented; cloud and web components remain planned.
+The Python worker, browser interface and AWS Lambda deployment are implemented. The public release was verified on 25 October 2026; see [release evidence](LIVE_RELEASE.md).
 
 The input manifest identifies a rectified reference, physical board dimensions and original captures. ORB descriptors and ratio-tested, unique matches feed RANSAC homography estimation. Consensus, reprojection error, spatial spread and projected-boundary checks reject weak geometry. The first milestone requires an already rectified reference; automatic corner-marker detection is deferred.
 
 Each registered capture contributes a projected validity mask and a separate focus/glare qualification mask. Coverage is the union of actual source samples. Reports retain per-cell source contributions and input hashes. Nearest-neighbor previews never fill gaps; a source-index raster identifies the input behind every supported preview pixel. Four-connected deficient cells define the largest physical region needing recapture.
 
-The planned Python/OpenCV worker on AWS will process signed uploads from a web UI; S3 will store originals and reports with short-lived access. The substantive AWS computation has not run. Calibration and overlap remain explicit. No curved objects, photogrammetric 3D, OCR, generative filling or archival certification. Input is owned artwork/printed patterns.
+One stateless AWS Lambda container serves the browser interface and runs the real Python/OpenCV pipeline. The Function URL adapter accepts bounded image data, uses generated request-local filenames, runs a bounded vision subprocess and deletes temporary files before responding. Optional IndexedDB persistence and downloaded files keep captures with the user; there is no S3 image store or shared result database. The execution role writes only this function's log streams. Calibration and overlap remain explicit. No curved objects, photogrammetric 3D, OCR, generative filling or archival certification. Input is owned artwork/printed patterns.
 
 ## Failure handling and data boundaries
 

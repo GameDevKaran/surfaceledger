@@ -7,7 +7,7 @@ const external = process.env.SURFACELEDGER_VERIFY_URL;
 const url=external || 'http://127.0.0.1:8784';
 if(external && !/^https:\/\/[a-z0-9]+\.lambda-url\.us-east-1\.on\.aws\/?$/.test(external))
   throw new Error('Live verification must target the exact authorized SurfaceLedger Lambda URL.');
-const folder='.local/browser';mkdirSync(folder,{recursive:true});
+const folder=external?'.local/live-browser':'.local/browser';mkdirSync(folder,{recursive:true});
 const report={at:new Date().toISOString(),url,scope:external?'deployed HTTPS':'local HTTP',checks:[],passed:false};
 let server,browser;
 try{

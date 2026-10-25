@@ -1,4 +1,6 @@
-# Working browser application — 21 October 2026
+# Working browser application
+
+Public release verified 25 October 2026 at https://2gflnfptor3334dyrlb6fy4jxy0jdiny.lambda-url.us-east-1.on.aws . The same nine browser checks now pass against actual AWS Lambda, alongside seven API/security/artifact checks. Four analysis request IDs match provider execution logs. Public evidence is kept separately under `.local/live-browser/`; the local evidence below is preserved. See [live release](LIVE_RELEASE.md).
 
 The stateless HTTP application uses the existing real OpenCV 5 pipeline. The interface provides reference/detail uploads, physical calibration, source/quality masks, deficient-region guidance, added recapture, per-source evidence, report/PNG/capture-set export, optional IndexedDB save/reload and explicit local deletion.
 
@@ -10,8 +12,8 @@ No server-side result database or shared image store is needed. Inputs/results l
 
 Application bounds are 4 MB request JSON, 2.8 MB decoded images total, 1.5 MB per image, six detail captures, approximately one megapixel for the overview and two per capture. The vision subprocess has a 25-second processing limit; failures return explicit errors. No model or generative filling is used.
 
-The Linux Lambda image also passed actual handler/static-interface/OpenCV processing and foreign-origin rejection checks under 1 GB memory, 0.6 CPU and a read-only root. Temporary capture directories were absent after processing. Image source commit: `8161eae7b8de9cb54c33e285329ebe5cca272602`; local manifest digest: `sha256:2ace0b2465ae4bf8023cc93de4771de439f4cddb4907b474ebfb93589478d498`. This image has not been pushed to AWS.
+The Linux Lambda image also passed actual handler/static-interface/OpenCV processing and foreign-origin rejection checks under 1 GB memory, 0.6 CPU and a read-only root. Temporary capture directories were absent after processing. Image source commit: `8161eae7b8de9cb54c33e285329ebe5cca272602`; immutable digest: `sha256:2ace0b2465ae4bf8023cc93de4771de439f4cddb4907b474ebfb93589478d498`. This exact image was uploaded to private ECR and deployed without rebuilding.
 
 The first emulator check caught a provenance-label defect: the AWS emulator supplies AWS-shaped identifiers even though it runs locally. The fix defaults to local evidence; only the deployed template opts into the AWS runtime label. The failed and passing reports are retained separately in `.local/container/`; no failed result was described as verified cloud execution.
 
-Pending: owner-approved AWS costs, actual public AWS deployment/browser verification, real owned camera evaluation and final media. Source remains private; the owner handles judge access and Devpost.
+Real owned camera evaluation and final media remain pending. Public AWS processing and browser verification are complete. Source remains private and judge access is managed by the owner.

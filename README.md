@@ -4,7 +4,9 @@ Find gaps and weak detail in tiled artwork captures.
 
 ## Status
 
-The local OpenCV 5 application and browser interface are implemented and tested on owned synthetic fixtures. Upload photographs, inspect measured coverage, add a recapture, save locally and export source-backed evidence. AWS execution, a public deployment and real camera validation remain pending. Source stays private until the owner explicitly authorizes publication of this project.
+**Live application:** https://2gflnfptor3334dyrlb6fy4jxy0jdiny.lambda-url.us-east-1.on.aws
+
+Public AWS Lambda execution was verified on 25 October 2026: nine browser workflow checks and seven API/security/artifact checks passed. The deployed image runs OpenCV 5.0.0 and NumPy 2.4.3; four actual analysis request IDs match AWS execution logs. Upload photographs, inspect measured coverage, add a recapture, save locally and export source-backed evidence. Verification used owned synthetic fixtures; real camera accuracy remains unmeasured. See the [release evidence and demonstration](docs/LIVE_RELEASE.md). Source stays private until the owner explicitly authorizes publication of this project.
 
 ## Intended use
 
